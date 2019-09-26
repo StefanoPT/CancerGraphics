@@ -204,8 +204,8 @@ function onKeyDown(e) {
 
         case 51://3
             camera.position.x = 60;
-            camera.position.y = 60;
-            camera.position.z = 60;
+            camera.position.y = 0;
+            camera.position.z = 0;
             onResize();
             camera.lookAt(scene.position);
             break;
@@ -223,7 +223,16 @@ function onKeyDown(e) {
             flag = !flag;
 
             break;
-        }
+        
+
+        case 53://5
+            camera.position.x = 60;
+            camera.position.y = 60;
+            camera.position.z = 60;
+            onResize();
+            camera.lookAt(scene.position);
+            break;
+    }
 }
 
 function createScene() {
