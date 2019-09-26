@@ -10,7 +10,6 @@ var hand;
 
 var target;
 
-var flag = false;
 
 
 function Base(x,y,z){
@@ -213,14 +212,10 @@ function onKeyDown(e) {
         case 52: //4
 			/*caso a tecla 4 seja premida desligamos os wireframes ou ligamos
 			dependendo*/
-            scene.traverse(function (node) {
-                if (node instanceof THREE.Mesh) {
-
-                    node.material.wireframe = flag;
-
-                }
-            });
-            flag = !flag;
+            base.material.wireframe = !base.material.wireframe;
+            arm.material.wireframe = !arm.material.wireframe;
+            hand.material.wireframe = !hand.material.wireframe;
+            target.material.wireframe = !target.material.wireframe;
 
             break;
         }
