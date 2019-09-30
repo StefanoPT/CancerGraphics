@@ -3,22 +3,51 @@
 var camera, scene, renderer;
 
 var base;
-
 var arm;
-
 var hand;
-
 var target;
 
-var flag = false;
+var wireframe_flag = false;
+var keys_pressed = {};
 
 
-function Base(x,y,z){
+function Vector(x, y, z) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+
+    this.add_to_vector = function (vector) {
+        this.x += vector.x;
+        this.y += vector.y;
+        this.z += vector.z;
+    }
+
+    this.normalize = function () {
+        let vector_size = Math.sqrt(this.x ** 2 + this.y ** 2 + this.z ** 2);
+
+        if (vector_size != 0) {
+            this.x /= (vector_size * 10);
+            this.y /= (vector_size * 10);
+            this.z /= (vector_size * 10);
+        }
+    }
+}
+
+function onKeyPress(event) {
+    if(event.key == "4" && !event.repeat) {
+        keys_pressed["4"] = event.type == "keydown";
+    }
+
+    if(event.key != "4") {
+        keys_pressed[event.key] = event.type == "keydown";
+    }
+}
+
+function Base(x,y,z) {
 
     this.object = new THREE.Object3D();
 
     this.material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
-
     this.object.position.set(x, y, z);
 
     this.addBaseBalls = function (base, x, y, z) {
@@ -47,7 +76,7 @@ function Base(x,y,z){
 
     this.addRolling = function (base, x, y, z) {
 
-        let geometry = new THREE.SphereBufferGeometry(5, 12, 12, 0, 2 * Math.PI, 0, 0.5 * Math.PI);
+        let geometry = new THREE.SphereGeometry(5, 12, 12, 0, 2 * Math.PI, 0, 0.5 * Math.PI);
 
         let mesh = new THREE.Mesh(geometry, base.material);
 
@@ -178,63 +207,6 @@ function Target(x,y,z){
 
 }
 
-
-function onKeyDown(e) {
-    'use strict';
-
-
-    switch (e.keyCode) {
-
-        case 49://1
-
-            camera.position.x = 0;
-            camera.position.y = 60;
-            camera.position.z = 0;
-            onResize();
-            camera.lookAt(scene.position);
-            break;
-
-        case 50://2
-            camera.position.x = 0;
-            camera.position.y = 0;
-            camera.position.z = 60;
-            onResize();
-            camera.lookAt(scene.position);
-            break;
-
-        case 51://3
-            camera.position.x = 60;
-            camera.position.y = 0;
-            camera.position.z = 0;
-            onResize();
-            camera.lookAt(scene.position);
-            break;
-
-        case 52: //4
-			/*caso a tecla 4 seja premida desligamos os wireframes ou ligamos
-			dependendo*/
-            scene.traverse(function (node) {
-                if (node instanceof THREE.Mesh) {
-
-                    node.material.wireframe = flag;
-
-                }
-            });
-            flag = !flag;
-
-            break;
-        
-
-        case 53://5
-            camera.position.x = 60;
-            camera.position.y = 60;
-            camera.position.z = 60;
-            onResize();
-            camera.lookAt(scene.position);
-            break;
-    }
-}
-
 function createScene() {
     'use strict';
 
@@ -284,21 +256,69 @@ function init() {
     createScene();
     createCamera();
 
-    new Base(0, 0, 0);
-    new Arm(0,10,0);
-    new Target(0,0,0);
-
+    base = new Base(0, 0, 0);
+    arm = new Arm(0,10,0);
+    target = new Target(0,0,0);
 
     render();
 
-    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("keydown", onKeyPress);
+    window.addEventListener("keyup", onKeyPress);
     window.addEventListener("resize", onResize);
+}
+
+function update() {
+
+    if(keys_pressed["1"]) {
+        camera.position.x = 0;
+        camera.position.y = 60;
+        camera.position.z = 0;
+        onResize();
+        camera.lookAt(scene.position);
+    }
+
+    else if(keys_pressed["2"]) {
+        camera.position.x = 0;
+        camera.position.y = 0;
+        camera.position.z = 60;
+        onResize();
+        camera.lookAt(scene.position);
+    }
+
+    else if(keys_pressed["3"]) {
+        camera.position.x = 60;
+        camera.position.y = 0;
+        camera.position.z = 0;
+        onResize();
+        camera.lookAt(scene.position);
+    }
+
+    else if(keys_pressed["4"]) {
+        
+            /*caso a tecla 4 seja premida desligamos os wireframes ou ligamos
+        dependendo*/
+        scene.traverse(function (node) {
+            if (node instanceof THREE.Mesh) {
+                node.material.wireframe = wireframe_flag;
+            }
+        });
+        wireframe_flag = !wireframe_flag;
+    }
+
+    else if(keys_pressed["5"]) {
+        camera.position.x = 60;
+        camera.position.y = 60;
+        camera.position.z = 60;
+        onResize();
+        camera.lookAt(scene.position);
+    }
 }
 
 function animate() {
     'use strict';
-
-    render();
-
+    
     requestAnimationFrame(animate);
+
+    update();
+    render();
 }
