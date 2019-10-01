@@ -13,7 +13,8 @@ var keys_pressed = {
     "2": 50,
     "3": 51,
     "4": 52,
-    "5": 53
+    "5": 53,
+    "w": 87
 };
 var current_camera = 0;
 
@@ -57,6 +58,9 @@ function onKeyDown(event) {
         case keys_pressed["5"]:
             current_camera = 4;
             break;
+        case keys_pressed["w"]:
+            carrinho.move_carrinho(1, 0, 0);
+            break;
     }
 }
 
@@ -66,7 +70,7 @@ function onKeyUp(event) {
 
 function Carrinho(x, y, z) {
 
-    this.object = new THREE.Group;
+    this.object = new THREE.Group();
 
     this.object.add(base.object);
     this.object.add(arm.object);
@@ -76,6 +80,12 @@ function Carrinho(x, y, z) {
     this.toggle_wireframe = function() {
         base.toggle_wireframe();
         arm.toggle_wireframe();
+    }
+
+    this.move_carrinho = function(x, y, z) {
+        this.object.position.x += x;
+        this.object.position.y += y;
+        this.object.position.z += z;
     }
 
     scene.add(this.object);
