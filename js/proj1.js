@@ -47,6 +47,9 @@ function onKeyDown(event) {
     if(event.key == "4") {
         toggle_wireframe = true;
     }
+    if(event.key == "5") {
+        current_camera = 4;
+    }
     if(event.key == "w") {
         keys_pressed["w"] = true;
     }
@@ -113,9 +116,9 @@ function Carrinho(x, y, z) {
     }
 
     this.rotate_carrinho = function(x, y, z) {
-        this.object.rotation.x += x;
-        this.object.rotation.y += y;
-        this.object.rotation.z += z;
+        this.object.rotateX(x);
+        this.object.rotateY(y);
+        this.object.rotateZ(z);
     }
 
     scene.add(this.object);
