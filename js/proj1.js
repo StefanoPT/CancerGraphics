@@ -4,8 +4,8 @@ var camera, scene, renderer;
 
 var base;
 var arm;
-var hand;
 var target;
+var carrinho;
 
 var toggle_wireframe = false;
 var keys_pressed = {
@@ -40,7 +40,7 @@ function Vector(x, y, z) {
     }
 }
 
-function onKeyPress(event) {
+function onKeyDown(event) {
     switch(event.keyCode) {
         case keys_pressed["1"]:
             current_camera = 1;
@@ -64,6 +64,18 @@ function onKeyUp(event) {
 
 }
 
+function Carrinho(x, y, z) {
+
+    this.object = new THREE.Object3D();
+
+    this.object.add(base);
+    this.object.add(arm);
+
+    this.object.position.set(x, y, z);
+
+    scene.add(this.object);
+
+}
 function Base(x,y,z) {
 
     this.object = new THREE.Object3D();
@@ -279,10 +291,11 @@ function init() {
     base = new Base(0, 0, 0);
     arm = new Arm(0,10,0);
     target = new Target(0,0,0);
+    carrinho = new Carrinho(0, 0, 0);
 
     render();
 
-    window.addEventListener("keydown", onKeyPress);
+    window.addEventListener("keydown", onKeyDown);
     window.addEventListener("keyup", onKeyUp);
     window.addEventListener("resize", onResize);
 }
@@ -312,20 +325,18 @@ function update() {
             camera.lookAt(scene.position);
             break;
         case 4:
-            camera.position.x = 60;
-            camera.position.y = 60;
-            camera.position.z = 60;
+            camera.position.x = 20;
+            camera.position.y = 20;
+            camera.position.z = 20;
             onResize();
             camera.lookAt(scene.position);
         default: break;       
     }
 
     if(toggle_wireframe) {
-        scene.traverse(function (node) {
-            if (node instanceof THREE.Mesh) {
-                node.material.wireframe = !node.material.wireframe;
-            }
-        });   
+        base.material.wireframe = !base.material.wireframe;
+        arm.material.wireframe = !arm.material.wireframe;
+        target.material.wireframe = !target.material.wireframe;
         toggle_wireframe = false;     
     }
 }
