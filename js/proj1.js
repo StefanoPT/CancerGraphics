@@ -66,22 +66,31 @@ function onKeyUp(event) {
 
 function Carrinho(x, y, z) {
 
-    this.object = new THREE.Object3D();
+    this.object = new THREE.Group;
 
-    this.object.add(base);
-    this.object.add(arm);
+    this.object.add(base.object);
+    this.object.add(arm.object);
 
     this.object.position.set(x, y, z);
 
-    scene.add(this.object);
+    this.toggle_wireframe = function() {
+        base.toggle_wireframe();
+        arm.toggle_wireframe();
+    }
 
+    scene.add(this.object);
 }
+
 function Base(x,y,z) {
 
     this.object = new THREE.Object3D();
 
     this.material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
     this.object.position.set(x, y, z);
+
+    this.toggle_wireframe = function () {
+        this.material.wireframe = !this.material.wireframe;
+    }
 
     this.addBaseBalls = function (base, x, y, z) {
 
@@ -134,6 +143,10 @@ function Arm(x,y,z){
     this.material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
 
     this.object.position.set(x, y, z);
+
+    this.toggle_wireframe = function () {
+        this.material.wireframe = !this.material.wireframe;
+    }
 
     this.addFirstArm = function(arm, x,y,z){
 
