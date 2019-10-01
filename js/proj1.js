@@ -62,6 +62,12 @@ function onKeyDown(event) {
     if(event.key == "d") {
         keys_pressed["d"] = true;
     }
+    if(event.key == "q") {
+        keys_pressed["q"] = true;
+    }
+    if(event.key == "e") {
+        keys_pressed["e"] = true;
+    }
 }
 
 function onKeyUp(event) {
@@ -76,6 +82,12 @@ function onKeyUp(event) {
     }
     if(event.key == "d") {
         keys_pressed["d"] = false;
+    }
+    if(event.key == "q") {
+        keys_pressed["q"] = false;
+    }
+    if(event.key == "e") {
+        keys_pressed["e"] = false;
     }
 }
 
@@ -93,6 +105,13 @@ function move_carrinho() {
     if(keys_pressed["d"]) {
         carrinho.rotate_carrinho(0, -0.05, 0);
     }
+    if(keys_pressed["q"]) {
+        arm.rotate_arm(0.05, 0, 0);
+    }
+    if(keys_pressed["e"]) {
+        arm.rotate_arm(-0.05, 0, 0);
+    }
+
 }
 
 function Carrinho(x, y, z) {
@@ -110,9 +129,9 @@ function Carrinho(x, y, z) {
     }
 
     this.move_carrinho = function(x, y, z) {
-        this.object.position.x += x;
-        this.object.position.y += y;
-        this.object.position.z += z;
+        this.object.translateX(x);
+        this.object.translateY(y);
+        this.object.translateZ(z);
     }
 
     this.rotate_carrinho = function(x, y, z) {
@@ -120,7 +139,7 @@ function Carrinho(x, y, z) {
         this.object.rotateY(y);
         this.object.rotateZ(z);
     }
-
+    this.object.add(new THREE.AxisHelper(10));
     scene.add(this.object);
 }
 
@@ -189,6 +208,12 @@ function Arm(x,y,z){
 
     this.toggle_wireframe = function () {
         this.material.wireframe = !this.material.wireframe;
+    }
+
+    this.rotate_arm = function(x, y, z) {
+        this.object.rotateX(x);
+        this.object.rotateY(y);
+        this.object.rotateZ(z);
     }
 
     this.addFirstArm = function(arm, x,y,z){
