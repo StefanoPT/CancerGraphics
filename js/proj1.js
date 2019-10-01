@@ -47,20 +47,48 @@ function onKeyDown(event) {
     if(event.key == "4") {
         toggle_wireframe = true;
     }
-
     if(event.key == "w") {
         keys_pressed["w"] = true;
+    }
+    if(event.key == "s") {
+        keys_pressed["s"] = true;
+    }
+    if(event.key == "a") {
+        keys_pressed["a"] = true;
+    }
+    if(event.key == "d") {
+        keys_pressed["d"] = true;
     }
 }
 
 function onKeyUp(event) {
-
+    if(event.key == "w") {
+        keys_pressed["w"] = false;
+    }
+    if(event.key == "s") {
+        keys_pressed["s"] = false;
+    }
+    if(event.key == "a") {
+        keys_pressed["a"] = false;
+    }
+    if(event.key == "d") {
+        keys_pressed["d"] = false;
+    }
 }
 
 
 function move_carrinho() {
     if(keys_pressed["w"]) {
         carrinho.move_carrinho(1, 0, 0);
+    }
+    if(keys_pressed["s"]) {
+        carrinho.move_carrinho(-1, 0, 0);
+    }
+    if(keys_pressed["a"]) {
+        carrinho.rotate_carrinho(0, 0.05, 0);
+    }
+    if(keys_pressed["d"]) {
+        carrinho.rotate_carrinho(0, -0.05, 0);
     }
 }
 
@@ -82,6 +110,12 @@ function Carrinho(x, y, z) {
         this.object.position.x += x;
         this.object.position.y += y;
         this.object.position.z += z;
+    }
+
+    this.rotate_carrinho = function(x, y, z) {
+        this.object.rotation.x += x;
+        this.object.rotation.y += y;
+        this.object.rotation.z += z;
     }
 
     scene.add(this.object);
