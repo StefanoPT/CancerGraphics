@@ -8,14 +8,7 @@ var target;
 var carrinho;
 
 var toggle_wireframe = false;
-var keys_pressed = {
-    "1": 49,
-    "2": 50,
-    "3": 51,
-    "4": 52,
-    "5": 53,
-    "w": 87
-};
+var keys_pressed = {};
 var current_camera = 0;
 
 
@@ -42,30 +35,33 @@ function Vector(x, y, z) {
 }
 
 function onKeyDown(event) {
-    switch(event.keyCode) {
-        case keys_pressed["1"]:
-            current_camera = 1;
-            break;
-        case keys_pressed["2"]:
-            current_camera = 2;
-            break;
-        case keys_pressed["3"]:
-            current_camera = 3;
-            break;
-        case keys_pressed["4"]:
-            toggle_wireframe = true;
-            break;
-        case keys_pressed["5"]:
-            current_camera = 4;
-            break;
-        case keys_pressed["w"]:
-            carrinho.move_carrinho(1, 0, 0);
-            break;
+    if(event.key == "1") {
+        current_camera = 1;
+    }
+    if(event.key == "2") {
+        current_camera = 2;
+    }
+    if(event.key == "3") {
+        current_camera = 3;
+    }
+    if(event.key == "4") {
+        toggle_wireframe = true;
+    }
+
+    if(event.key == "w") {
+        keys_pressed["w"] = true;
     }
 }
 
 function onKeyUp(event) {
 
+}
+
+
+function move_carrinho() {
+    if(keys_pressed["w"]) {
+        carrinho.move_carrinho(1, 0, 0);
+    }
 }
 
 function Carrinho(x, y, z) {
@@ -362,6 +358,8 @@ function update() {
         target.material.wireframe = !target.material.wireframe;
         toggle_wireframe = false;     
     }
+
+    move_carrinho();
 }
 
 function animate() {
