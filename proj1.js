@@ -381,13 +381,13 @@ function createScene() {
 
 function createCamera() {
     'use strict';
-    // camera = new THREE.OrthographicCamera(window.innerwidth / - 2, 
-        // window.innerwidth / 2, window.height / 2, window.height / - 2, 1, 1000 );
+    camera = new THREE.OrthographicCamera(window.innerWidth / - 20, 
+        window.innerWidth / 20, window.innerHeight / 20, window.innerHeight / - 20, 1, 1000);
     
-    camera = new THREE.PerspectiveCamera(70,
-        window.innerWidth / window.innerHeight,
-        1,
-        1000);
+    // camera = new THREE.PerspectiveCamera(70,
+        // window.innerWidth / window.innerHeight,
+        // 1,
+        // 1000);
     camera.position.x = 40;
     camera.position.y = 40;
     camera.position.z = 40;
@@ -399,11 +399,11 @@ function onResize() {
 
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    if (window.innerHeight > 0 && window.innerWidth > 0) {
+/*    if (window.innerHeight > 0 && window.innerWidth > 0) {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
     }
-
+*/
 }
 
 function render() {
