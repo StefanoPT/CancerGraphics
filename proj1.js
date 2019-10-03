@@ -17,28 +17,6 @@ var movement_keys = ["w", "a", "s", "d",
 var current_camera = 0;
 
 
-function Vector(x, y, z) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
-
-    this.add_to_vector = function (vector) {
-        this.x += vector.x;
-        this.y += vector.y;
-        this.z += vector.z;
-    }
-
-    this.normalize = function () {
-        let vector_size = Math.sqrt(this.x ** 2 + this.y ** 2 + this.z ** 2);
-
-        if (vector_size != 0) {
-            this.x /= (vector_size * 10);
-            this.y /= (vector_size * 10);
-            this.z /= (vector_size * 10);
-        }
-    }
-}
-
 function onKeyDown(event) {
     if(event.key == "1") {
         current_camera = 1;
@@ -85,7 +63,7 @@ function rotate_arm() {
 function move_carrinho() {
     let movement_vector = new THREE.Vector3();
     if(keys_pressed["ArrowUp"]) {
-        movement_vector.add(new THREE.Vector3(0, 0, 1));
+        movement_vector.add(new THREE.Vector3(0, 0, -1));
     }
     if(keys_pressed["ArrowLeft"]) {
         movement_vector.add(new THREE.Vector3(-1, 0, 0));
@@ -94,8 +72,9 @@ function move_carrinho() {
         movement_vector.add(new THREE.Vector3(1, 0, 0));        
     }
     if(keys_pressed["ArrowDown"]) {
-        movement_vector.add(new THREE.Vector3(0, 0, -1));
+        movement_vector.add(new THREE.Vector3(0, 0, 1));
     }
+
     movement_vector.normalize();
     carrinho.move_carrinho(movement_vector.x,
         movement_vector.y,
@@ -345,11 +324,14 @@ function onResize() {
 
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-/*    if (window.innerHeight > 0 && window.innerWidth > 0) {
-        camera.aspect = window.innerWidth / window.innerHeight;
+    if (window.innerHeight > 0 && window.innerWidth > 0) {
+        camera.left = window.innerWidth / - 10;
+        camera.right = window.innerWidth / 10;
+        camera.top = window.innerHeight / 10;
+        camera.bottow = window.innerHeight / - 10;
         camera.updateProjectionMatrix();
     }
-*/
+
 }
 
 function render() {
