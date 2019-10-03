@@ -117,8 +117,7 @@ function onKeyUp(event) {
     }
 }
 
-
-function move_carrinho() {
+function rotate_arm() {
     if(keys_pressed["w"]) {
         carrinho.rotate_arm(0.05, 0, 0);
     }
@@ -131,19 +130,26 @@ function move_carrinho() {
     if(keys_pressed["a"]) {
         carrinho.rotate_arm(0, -0.05, 0);
     }
+}
+
+function move_carrinho() {
+    let movement_vector = new THREE.Vector3();
     if(keys_pressed["ArrowUp"]) {
-        carrinho.move_carrinho(0, 0, 1);
+        movement_vector.add(new THREE.Vector3(0, 0, 1));
     }
     if(keys_pressed["ArrowLeft"]) {
-        carrinho.move_carrinho(-1, 0, 0);
+        movement_vector.add(new THREE.Vector3(-1, 0, 0));
     }
     if(keys_pressed["ArrowRight"]) {
-        carrinho.move_carrinho(1, 0, 0);
+        movement_vector.add(new THREE.Vector3(1, 0, 0));        
     }
     if(keys_pressed["ArrowDown"]) {
-        carrinho.move_carrinho(0, 0, -1);
+        movement_vector.add(new THREE.Vector3(0, 0, -1));
     }
-
+    movement_vector.normalize();
+    carrinho.move_carrinho(movement_vector.x,
+        movement_vector.y,
+        movement_vector.z);
 }
 
 function Carrinho(x, y, z) {
@@ -375,6 +381,9 @@ function createScene() {
 
 function createCamera() {
     'use strict';
+    // camera = new THREE.OrthographicCamera(window.innerwidth / - 2, 
+        // window.innerwidth / 2, window.height / 2, window.height / - 2, 1, 1000 );
+    
     camera = new THREE.PerspectiveCamera(70,
         window.innerWidth / window.innerHeight,
         1,
@@ -469,6 +478,7 @@ function update() {
         toggle_wireframe = false;     
     }
 
+    rotate_arm();
     move_carrinho();
 }
 
