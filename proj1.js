@@ -119,16 +119,16 @@ function onKeyUp(event) {
 
 function rotate_arm() {
     if(keys_pressed["w"]) {
-        carrinho.rotate_arm(0.05, 0, 0);
+        arm.rotate_arm(1, 0, 0);
     }
     if(keys_pressed["q"]) {
-        arm.rotate_arm(-0.05, 0, 0);
+        arm.rotate_arm(-1, 0, 0);
     }
     if(keys_pressed["s"]) {
-        carrinho.rotate_arm(0, 0.05, 0);
+        arm.rotate_arm(0, -1, 0);
     }
     if(keys_pressed["a"]) {
-        carrinho.rotate_arm(0, -0.05, 0);
+        arm.rotate_arm(0, 1, 0);
     }
 }
 
@@ -178,14 +178,14 @@ function Carrinho(x, y, z) {
         this.object.rotateZ(z);
     }
 
-    this.rotate_arm = function(x, y, z) {
-        /*let vector = new THREE.Vector3(x, y, z);
+    /*this.rotate_arm = function(x, y, z) {
+        let vector = new THREE.Vector3(x, y, z);
         arm.object.rotateOnWorldAxis(vector, 0.05);
-        */
+        
         arm.object.rotateX(x);
         arm.object.rotateY(y);
         arm.object.rotateZ(z);
-    }
+    }*/
     this.object.add(new THREE.AxisHelper(10));
     scene.add(this.object);
 }
@@ -257,9 +257,8 @@ function Arm(x,y,z){
     }
 
     this.rotate_arm = function(x, y, z) {
-        this.object.rotateX(x);
-        this.object.rotateY(y);
-        this.object.rotateZ(z);
+        let vector = new THREE.Vector3(x, y, z);
+        arm.object.rotateOnWorldAxis(vector, 0.05);
     }
 
     this.addFirstArm = function(arm, x,y,z){
