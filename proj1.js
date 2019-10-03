@@ -7,6 +7,8 @@ var arm;
 var target;
 var carrinho;
 
+var clock;
+
 var toggle_wireframe = false;
 var keys_pressed = {};
 var current_camera = 0;
@@ -68,6 +70,18 @@ function onKeyDown(event) {
     if(event.key == "e") {
         keys_pressed["e"] = true;
     }
+    if(event.key == "ArrowUp") {
+        keys_pressed["ArrowUp"] = true;
+    }
+    if(event.key == "ArrowLeft") {
+        keys_pressed["ArrowLeft"] = true;
+    }
+    if(event.key == "ArrowRight") {
+        keys_pressed["ArrowRight"] = true;
+    }
+    if(event.key == "ArrowDown") {
+        keys_pressed["ArrowDown"] = true;
+    }
 }
 
 function onKeyUp(event) {
@@ -89,27 +103,45 @@ function onKeyUp(event) {
     if(event.key == "e") {
         keys_pressed["e"] = false;
     }
+    if(event.key == "ArrowUp") {
+        keys_pressed["ArrowUp"] = false;
+    }
+    if(event.key == "ArrowLeft") {
+        keys_pressed["ArrowLeft"] = false;
+    }
+    if(event.key == "ArrowRight") {
+        keys_pressed["ArrowRight"] = false;
+    }
+    if(event.key == "ArrowDown") {
+        keys_pressed["ArrowDown"] = false;
+    }
 }
 
 
 function move_carrinho() {
     if(keys_pressed["w"]) {
-        carrinho.move_carrinho(1, 0, 0);
-    }
-    if(keys_pressed["s"]) {
-        carrinho.move_carrinho(-1, 0, 0);
-    }
-    if(keys_pressed["a"]) {
-        carrinho.rotate_carrinho(0, 0.05, 0);
-    }
-    if(keys_pressed["d"]) {
-        carrinho.rotate_carrinho(0, -0.05, 0);
+        carrinho.rotate_arm(0.05, 0, 0);
     }
     if(keys_pressed["q"]) {
-        arm.rotate_arm(0.05, 0, 0);
-    }
-    if(keys_pressed["e"]) {
         arm.rotate_arm(-0.05, 0, 0);
+    }
+    if(keys_pressed["s"]) {
+        carrinho.rotate_arm(0, 0.05, 0);
+    }
+    if(keys_pressed["a"]) {
+        carrinho.rotate_arm(0, -0.05, 0);
+    }
+    if(keys_pressed["ArrowUp"]) {
+        carrinho.move_carrinho(0, 0, 1);
+    }
+    if(keys_pressed["ArrowLeft"]) {
+        carrinho.move_carrinho(-1, 0, 0);
+    }
+    if(keys_pressed["ArrowRight"]) {
+        carrinho.move_carrinho(1, 0, 0);
+    }
+    if(keys_pressed["ArrowDown"]) {
+        carrinho.move_carrinho(0, 0, -1);
     }
 
 }
@@ -138,6 +170,15 @@ function Carrinho(x, y, z) {
         this.object.rotateX(x);
         this.object.rotateY(y);
         this.object.rotateZ(z);
+    }
+
+    this.rotate_arm = function(x, y, z) {
+        /*let vector = new THREE.Vector3(x, y, z);
+        arm.object.rotateOnWorldAxis(vector, 0.05);
+        */
+        arm.object.rotateX(x);
+        arm.object.rotateY(y);
+        arm.object.rotateZ(z);
     }
     this.object.add(new THREE.AxisHelper(10));
     scene.add(this.object);
@@ -372,6 +413,8 @@ function init() {
     createScene();
     createCamera();
 
+    clock = new THREE.Clock(true);
+
     base = new Base(0, 0, 0);
     arm = new Arm(0,0,0);
     target = new Target(0,0,0);
@@ -385,6 +428,8 @@ function init() {
 }
 
 function update() {
+
+    deltaTime = clock.getDelta();
 
     switch(current_camera) {
         case 1:
