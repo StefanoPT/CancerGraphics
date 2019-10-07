@@ -8,114 +8,42 @@ var target;
 var carrinho;
 
 var clock;
-
 var toggle_wireframe = false;
 var keys_pressed = {};
+var movement_keys = ["w", "a", "s", "d",
+    "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]
+
 var current_camera = 0;
 
 
-function Vector(x, y, z) {
-    this.x = x;
-    this.y = y;
-    this.z = z;
-
-    this.add_to_vector = function (vector) {
-        this.x += vector.x;
-        this.y += vector.y;
-        this.z += vector.z;
-    }
-
-    this.normalize = function () {
-        let vector_size = Math.sqrt(this.x ** 2 + this.y ** 2 + this.z ** 2);
-
-        if (vector_size != 0) {
-            this.x /= (vector_size * 10);
-            this.y /= (vector_size * 10);
-            this.z /= (vector_size * 10);
-        }
-    }
-}
-
 function onKeyDown(event) {
-    if(event.key == "1") {
+    if (event.key == "1") {
         current_camera = 1;
     }
-    if(event.key == "2") {
+    if (event.key == "2") {
         current_camera = 2;
     }
-    if(event.key == "3") {
+    if (event.key == "3") {
         current_camera = 3;
     }
-    if(event.key == "4") {
+    if (event.key == "4") {
         toggle_wireframe = true;
     }
-    if(event.key == "5") {
+    if (event.key == "5") {
         current_camera = 4;
     }
-    if(event.key == "w") {
-        keys_pressed["w"] = true;
-    }
-    if(event.key == "s") {
-        keys_pressed["s"] = true;
-    }
-    if(event.key == "a") {
-        keys_pressed["a"] = true;
-    }
-    if(event.key == "d") {
-        keys_pressed["d"] = true;
-    }
-    if(event.key == "q") {
-        keys_pressed["q"] = true;
-    }
-    if(event.key == "e") {
-        keys_pressed["e"] = true;
-    }
-    if(event.key == "ArrowUp") {
-        keys_pressed["ArrowUp"] = true;
-    }
-    if(event.key == "ArrowLeft") {
-        keys_pressed["ArrowLeft"] = true;
-    }
-    if(event.key == "ArrowRight") {
-        keys_pressed["ArrowRight"] = true;
-    }
-    if(event.key == "ArrowDown") {
-        keys_pressed["ArrowDown"] = true;
+
+    else if (movement_keys.includes(event.key)) {
+        keys_pressed[event.key] = true;
     }
 }
 
 function onKeyUp(event) {
-    if(event.key == "w") {
-        keys_pressed["w"] = false;
-    }
-    if(event.key == "s") {
-        keys_pressed["s"] = false;
-    }
-    if(event.key == "a") {
-        keys_pressed["a"] = false;
-    }
-    if(event.key == "d") {
-        keys_pressed["d"] = false;
-    }
-    if(event.key == "q") {
-        keys_pressed["q"] = false;
-    }
-    if(event.key == "e") {
-        keys_pressed["e"] = false;
-    }
-    if(event.key == "ArrowUp") {
-        keys_pressed["ArrowUp"] = false;
-    }
-    if(event.key == "ArrowLeft") {
-        keys_pressed["ArrowLeft"] = false;
-    }
-    if(event.key == "ArrowRight") {
-        keys_pressed["ArrowRight"] = false;
-    }
-    if(event.key == "ArrowDown") {
-        keys_pressed["ArrowDown"] = false;
+    if (movement_keys.includes(event.key)) {
+        keys_pressed[event.key] = false;
     }
 }
+
 
 function rotate_arm() {
     if(keys_pressed["w"]) {
