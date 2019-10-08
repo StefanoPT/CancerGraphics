@@ -10,7 +10,7 @@ var carrinho;
 var clock;
 var toggle_wireframe = false;
 var keys_pressed = {};
-var movement_keys = ["w", "a", "s", "d",
+var movement_keys = ["w", "a", "s", "q",
     "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]
 
 var current_camera = 0;
@@ -33,7 +33,7 @@ function onKeyDown(event) {
         current_camera = 4;
     }
 
-    else if (movement_keys.includes(event.key)) {
+    if (movement_keys.includes(event.key)) {
         keys_pressed[event.key] = true;
     }
 }
@@ -63,7 +63,7 @@ function rotate_arm() {
 function move_carrinho() {
     let movement_vector = new THREE.Vector3();
     if(keys_pressed["ArrowUp"]) {
-        movement_vector.add(new THREE.Vector3(0, 0, 1));
+        movement_vector.add(new THREE.Vector3(0, 0, -1));
     }
     if(keys_pressed["ArrowLeft"]) {
         movement_vector.add(new THREE.Vector3(-1, 0, 0));
@@ -72,7 +72,7 @@ function move_carrinho() {
         movement_vector.add(new THREE.Vector3(1, 0, 0));        
     }
     if(keys_pressed["ArrowDown"]) {
-        movement_vector.add(new THREE.Vector3(0, 0, -1));
+        movement_vector.add(new THREE.Vector3(0, 0, 1));
     }
     movement_vector.normalize();
     carrinho.move_carrinho(movement_vector.x,
@@ -106,14 +106,6 @@ function Carrinho(x, y, z) {
         this.object.rotateZ(z);
     }
 
-    /*this.rotate_arm = function(x, y, z) {
-        let vector = new THREE.Vector3(x, y, z);
-        arm.object.rotateOnWorldAxis(vector, 0.05);
-        
-        arm.object.rotateX(x);
-        arm.object.rotateY(y);
-        arm.object.rotateZ(z);
-    }*/
     this.object.add(new THREE.AxisHelper(10));
     scene.add(this.object);
 }
@@ -196,10 +188,6 @@ function Arm(x,y,z){
         let mesh = new THREE.Mesh(geometry, arm.material);
 
         mesh.position.set(x,y+10,z);
-
-        /*var pivot = new THREE.Group();
-        this.object.add(pivot);
-        arm.object.add(pivot);*/
 
         arm.object.add(mesh);
     }
@@ -310,11 +298,7 @@ function createCamera() {
     'use strict';
     camera = new THREE.OrthographicCamera(window.innerWidth / - 20, 
         window.innerWidth / 20, window.innerHeight / 20, window.innerHeight / - 20, 1, 1000);
-    
-    // camera = new THREE.PerspectiveCamera(70,
-        // window.innerWidth / window.innerHeight,
-        // 1,
-        // 1000);
+
     camera.position.x = 40;
     camera.position.y = 40;
     camera.position.z = 40;
@@ -326,11 +310,6 @@ function onResize() {
 
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-/*    if (window.innerHeight > 0 && window.innerWidth > 0) {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-    }
-*/
 }
 
 function render() {
@@ -372,28 +351,24 @@ function update() {
             camera.position.x = 0;
             camera.position.y = 60;
             camera.position.z = 0;
-            onResize();
             camera.lookAt(scene.position);
             break;
         case 2:
             camera.position.x = 0;
             camera.position.y = 0;
             camera.position.z = 60;
-            onResize();
             camera.lookAt(scene.position);
             break;
         case 3:
             camera.position.x = 60;
             camera.position.y = 0;
             camera.position.z = 0;
-            onResize();
             camera.lookAt(scene.position);
             break;
         case 4:
             camera.position.x = 20;
             camera.position.y = 20;
             camera.position.z = 20;
-            onResize();
             camera.lookAt(scene.position);
         default: break;       
     }
